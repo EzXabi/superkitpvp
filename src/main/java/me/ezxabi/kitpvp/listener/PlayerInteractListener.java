@@ -1,6 +1,6 @@
-package ezxabi.kitpvp.listener;
+package me.ezxabi.kitpvp.listener;
 
-import ezxabi.kitpvp.inventories.KitMenu;
+import me.ezxabi.kitpvp.inventories.KitMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

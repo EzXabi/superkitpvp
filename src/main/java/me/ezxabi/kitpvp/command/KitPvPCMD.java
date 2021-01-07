@@ -1,18 +1,19 @@
-package ezxabi.kitpvp.command;
+package me.ezxabi.kitpvp.command;
 
-import ezxabi.kitpvp.SuperKitPvP;
-import ezxabi.kitpvp.config.ConfigManager;
-import ezxabi.kitpvp.inventories.KitMenu;
-import ezxabi.kitpvp.util.Utils;
+import me.ezxabi.kitpvp.SuperKitPvP;
+import me.ezxabi.kitpvp.inventories.KitMenu;
+import me.ezxabi.kitpvp.manager.ConfigManager;
+import me.ezxabi.kitpvp.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class KitPvPCMD implements CommandExecutor {
 
-    private SuperKitPvP plugin;
+    private final SuperKitPvP plugin;
 
     public KitPvPCMD(SuperKitPvP plugin) {
         this.plugin = plugin;
@@ -20,6 +21,8 @@ public class KitPvPCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        ConfigManager configManager = plugin.getConfigManager();
+        FileConfiguration config = configManager.getConfig();
 
         //*
         // Algemene commando
@@ -63,25 +66,25 @@ public class KitPvPCMD implements CommandExecutor {
                 float pitch = p.getLocation().getPitch();
                 String worldName = p.getLocation().getWorld().getName();
 
-                ConfigManager.getConfig().set("spawn.x", x);
-                ConfigManager.getConfig().set("spawn.y", y);
-                ConfigManager.getConfig().set("spawn.z", z);
-                ConfigManager.getConfig().set("spawn.yaw", (double) yaw);
-                ConfigManager.getConfig().set("spawn.pitch", (double) pitch);
-                ConfigManager.getConfig().set("spawn.world", worldName);
-                ConfigManager.saveConfig();
+                config.set("spawn.x", x);
+                config.set("spawn.y", y);
+                config.set("spawn.z", z);
+                config.set("spawn.yaw", (double) yaw);
+                config.set("spawn.pitch", (double) pitch);
+                config.set("spawn.world", worldName);
+                configManager.saveConfig(config);
                 final Location l = p.getLocation();
                 p.getWorld().setSpawnLocation((int) l.getX(), (int) l.getY(), (int) l.getZ());
 
                 p.sendMessage(Utils.col("&aYou have successfully set up the lobby!"));
                 return true;
             } else if (args[0].equalsIgnoreCase("kit")) {
-                KitMenu.open(p);
+                KitMenu.open(plugin, p);
                 return true;
             } else if (args[0].equalsIgnoreCase("reload")) {
-                ConfigManager.loadKits();
-                ConfigManager.loadUsers();
-                ConfigManager.loadConfig();
+                configManager.loadKits();
+                configManager.loadUsers();
+                configManager.loadConfig();
 
                 p.sendMessage(Utils.col("&aYou have successfully reloaded all files!"));
                 return true;

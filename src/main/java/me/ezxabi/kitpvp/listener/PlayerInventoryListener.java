@@ -1,24 +1,25 @@
-package ezxabi.kitpvp.listener;
+package me.ezxabi.kitpvp.listener;
 
-import ezxabi.kitpvp.config.ConfigManager;
-import ezxabi.kitpvp.inventories.KitMenu;
-import ezxabi.kitpvp.util.Utils;
+import me.ezxabi.kitpvp.SuperKitPvP;
+import me.ezxabi.kitpvp.manager.ConfigManager;
+import me.ezxabi.kitpvp.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class PlayerInventoryListener implements Listener {
+
+    private final SuperKitPvP plugin;
+
+    public PlayerInventoryListener(SuperKitPvP plugin) {
+        this.plugin = plugin;
+    }
 
     @EventHandler
     public void close(InventoryClickEvent event) {
@@ -28,13 +29,13 @@ public class PlayerInventoryListener implements Listener {
             event.setCancelled(true);
             if (event.getClickedInventory().getTitle().equalsIgnoreCase("Selecteer jouw kit!")) {
 
-                String displayName = event.getCurrentItem().getItemMeta().getDisplayName();
+                String displayName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§", "&");
+                ConfigManager configManager = plugin.getConfigManager();
+                FileConfiguration users = configManager.getUsers();
 
-                displayName = displayName.replaceAll("§", "&");
-
-                for (String key : ConfigManager.getKits().getKeys(false)) {
-                    if (displayName.equalsIgnoreCase(ConfigManager.getKits().getString(key + ".options.kitname"))) {
-                        for (String item : ConfigManager.getKits().getStringList(key + ".items")) {
+                for (String key : configManager.getKits().getKeys(false)) {
+                    if (displayName.equalsIgnoreCase(configManager.getKits().getString(key + ".options.kitname"))) {
+                        for (String item : configManager.getKits().getStringList(key + ".items")) {
                             if (item == null) continue;
                             //Check als je niet 2 kits hebt
                             if (!event.getWhoClicked().getInventory().contains(Material.valueOf(item))) {
@@ -60,31 +61,33 @@ public class PlayerInventoryListener implements Listener {
                                 }
                             } else {
                                 ItemStack it = new ItemStack(Material.valueOf(item));
+
                                 p.closeInventory();
-                                double spawnX = ConfigManager.getUsers().getDouble("pvp.x");
-                                double spawnY = ConfigManager.getUsers().getDouble("pvp.y");
-                                double spawnZ = ConfigManager.getUsers().getDouble("pvp.z");
-                                String spawnWorld = ConfigManager.getUsers().getString("pvp.world");
-                                float yaw = (float) ConfigManager.getUsers().getDouble("pvp.yaw");
-                                float pitch = (float) ConfigManager.getUsers().getDouble("pvp.pitch");
+
+                                double spawnX = users.getDouble("pvp.x");
+                                double spawnY = users.getDouble("pvp.y");
+                                double spawnZ = users.getDouble("pvp.z");
+                                String spawnWorld = users.getString("pvp.world");
+                                float yaw = (float) users.getDouble("pvp.yaw");
+                                float pitch = (float) users.getDouble("pvp.pitch");
 
                                 Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
                                 event.getWhoClicked().teleport(spawnLocation);
                             }
                         }
-                        if (ConfigManager.getUsers().getDouble("pvp.x") != 0.0
-                                && ConfigManager.getUsers().getDouble("pvp.y") != 0.0
-                                && ConfigManager.getUsers().getDouble("pvp.z") != 0.0
-                                && ConfigManager.getUsers().getString("pvp.world") != ""
-                                && ConfigManager.getUsers().getDouble("pvp.yaw") != 0.0
-                                && ConfigManager.getUsers().getDouble("pvp.pitch") != 0.0) {
+                        if (users.getDouble("pvp.x") != 0.0
+                                && users.getDouble("pvp.y") != 0.0
+                                && users.getDouble("pvp.z") != 0.0
+                                && users.getString("pvp.world") != ""
+                                && users.getDouble("pvp.yaw") != 0.0
+                                && users.getDouble("pvp.pitch") != 0.0) {
                             event.getWhoClicked().closeInventory();
-                            double spawnX = ConfigManager.getUsers().getDouble("pvp.x");
-                            double spawnY = ConfigManager.getUsers().getDouble("pvp.y");
-                            double spawnZ = ConfigManager.getUsers().getDouble("pvp.z");
-                            String spawnWorld = ConfigManager.getUsers().getString("pvp.world");
-                            float yaw = (float) ConfigManager.getUsers().getDouble("pvp.yaw");
-                            float pitch = (float) ConfigManager.getUsers().getDouble("pvp.pitch");
+                            double spawnX = users.getDouble("pvp.x");
+                            double spawnY = users.getDouble("pvp.y");
+                            double spawnZ = users.getDouble("pvp.z");
+                            String spawnWorld = users.getString("pvp.world");
+                            float yaw = (float) users.getDouble("pvp.yaw");
+                            float pitch = (float) users.getDouble("pvp.pitch");
 
                             Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
                             event.getWhoClicked().teleport(spawnLocation);
