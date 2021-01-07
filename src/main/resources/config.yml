@@ -8,7 +8,7 @@ spawn:
   yaw: 0.0
   pitch: 0.0
 scoreboard:
-  title: "&2&lSuper&a&lKitPvp"
+  title: "&2&lSuper&a&lKitPvP"
   lines:
     - ''
     - '&2Stats:'
