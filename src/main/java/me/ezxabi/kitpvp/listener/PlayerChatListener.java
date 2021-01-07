@@ -1,4 +1,4 @@
-package ezxabi.kitpvp.listener;
+package me.ezxabi.kitpvp.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;

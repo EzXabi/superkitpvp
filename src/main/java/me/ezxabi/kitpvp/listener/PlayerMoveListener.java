@@ -1,6 +1,6 @@
-package ezxabi.kitpvp.listener;
+package me.ezxabi.kitpvp.listener;
 
-import ezxabi.kitpvp.SuperKitPvP;
+import me.ezxabi.kitpvp.SuperKitPvP;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -17,13 +17,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class PlayerMoveListener implements Listener {
-    private SuperKitPvP plugin;
+    List<UUID> jumppad = new ArrayList<UUID>();
+    private final SuperKitPvP plugin;
 
     public PlayerMoveListener(SuperKitPvP plugin) {
         this.plugin = plugin;
     }
-
-    List<UUID> jumppad = new ArrayList<UUID>();
 
     //*
     // Listener voor het gebruiken van crash pads : Gebruik (Plaats een gouden pressureplate op de grond en loop er over )
