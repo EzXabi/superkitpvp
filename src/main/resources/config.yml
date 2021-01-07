@@ -11,10 +11,10 @@ scoreboard:
   title: "&2&lSuper&a&lKitPvp"
   lines:
     - ''
-    - '&2&lStats:'
-    - '&f Kills:&a %user-kills%'
-    - '&f Deaths:&a %user-deaths%'
-    - '&f Coins:&a %user-coins%'
-    - '&f KD-ratio:&a %user-kd-ratio%'
+    - '&2Stats:'
+    - '&a Kills:&f %user-kills%'
+    - '&a Deaths:&f %user-deaths%'
+    - '&a KD Ratio:&f %user-kd-ratio%'
+    - '&a Points:&f %user-points% ✪'
     - ''
-    - '&2play.superkitpvp.net'
+    - '&fplay.superkitpvp.net'

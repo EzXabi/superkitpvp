@@ -24,11 +24,11 @@ public class ScoreboardIngame {
     }
 
     public static void show(Player player) {
-        String name = String.format("Rank.%s.%s", player.getUniqueId(), "name");
-        String killsPath = String.format("Rank.%s.%s", player.getUniqueId(), "kills");
-        String deathsPath = String.format("Rank.%s.%s", player.getUniqueId(), "deaths");
-        String coinsPath = String.format("Rank.%s.%s", player.getUniqueId(), "coins");
-        String bloodPath = String.format("Rank.%s.%s", player.getUniqueId(), "blood");
+        String name = String.format("Players.%s.%s", player.getUniqueId(), "name");
+        String killsPath = String.format("Players.%s.%s", player.getUniqueId(), "kills");
+        String deathsPath = String.format("Players.%s.%s", player.getUniqueId(), "deaths");
+        String coinsPath = String.format("Players.%s.%s", player.getUniqueId(), "coins");
+        String bloodPath = String.format("Players.%s.%s", player.getUniqueId(), "blood");
 
         double kills = ConfigManager.getUsers().getDouble(killsPath);
         double deaths = ConfigManager.getUsers().getDouble(deathsPath);
@@ -39,19 +39,36 @@ public class ScoreboardIngame {
         //*
         // Scoreboard aanmaken
         //*
+        List scoreboard = ConfigManager.getConfig().getStringList("scoreboard.lines");
+        String line1 = Utils.col((String) scoreboard.get(1));
+        String line2 = Utils.col((String) scoreboard.get(2));
+        line2 = line2.replace("%user-kills%", String.valueOf(kills));
+
+        String line3 = Utils.col((String) scoreboard.get(3));
+        line3 = line3.replace("%user-deaths%", String.valueOf(deaths));
+
+        String line4 = Utils.col((String) scoreboard.get(4));
+        line4 = line4.replace("%user-kd-ratio%", df.format(kdRatio));
+
+        String line5 = Utils.col((String) scoreboard.get(5));
+        line5 = line5.replace("%user-points%", String.valueOf(points));
+
+        String line6 = Utils.col((String) scoreboard.get(7));
+
+
         org.bukkit.scoreboard.Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
         Objective obj = board.registerNewObjective("kitpvp", "dummy");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         obj.setDisplayName(Utils.col(ConfigManager.getConfig().getString("scoreboard.title")));
         obj.getScore("    ").setScore(8);
-        obj.getScore("§2Stats").setScore(7);
-        obj.getScore("§aKills: §f" + kills).setScore(6);
-        obj.getScore("§aDeaths: §f" + deaths).setScore(5);
-        obj.getScore("§aPoints: §f" + points + " ✪").setScore(3);
+        obj.getScore(line1).setScore(7);
+        obj.getScore(line2).setScore(6);
+        obj.getScore(line3).setScore(5);
+        obj.getScore(line4).setScore(3);
 
-        obj.getScore("§aKD Ratio: §f" + df.format(kdRatio)).setScore(4);
+        obj.getScore(line5).setScore(4);
         obj.getScore("   ").setScore(2);
-        obj.getScore("§fplay.superkitpvp.net").setScore(1);
+        obj.getScore(line6).setScore(1);
 
         player.setScoreboard(board);
     }

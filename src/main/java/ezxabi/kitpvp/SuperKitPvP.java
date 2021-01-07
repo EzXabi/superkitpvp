@@ -1,9 +1,9 @@
 package ezxabi.kitpvp;
 
-import ezxabi.kitpvp.commands.BloodCMD;
-import ezxabi.kitpvp.commands.KitPvPCMD;
+import ezxabi.kitpvp.command.BloodCMD;
+import ezxabi.kitpvp.command.KitPvPCMD;
 import ezxabi.kitpvp.config.ConfigManager;
-import ezxabi.kitpvp.events.*;
+import ezxabi.kitpvp.listener.*;
 import ezxabi.kitpvp.scoreboard.ScoreboardIngame;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,14 +23,14 @@ public final class SuperKitPvP extends JavaPlugin {
     }
 
     public void loadListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerJoin(this), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerKill(this), this);
-        Bukkit.getPluginManager().registerEvents(new MultipleEvents(), this);
-        Bukkit.getPluginManager().registerEvents(new Chat(), this);
-        Bukkit.getPluginManager().registerEvents(new OnMove(this), this);
-        Bukkit.getPluginManager().registerEvents(new ItemDrop(), this);
-        Bukkit.getPluginManager().registerEvents(new Hunger(), this);
-
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerKillListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInventoryListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerItemDropListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerHungerListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(),this);
     }
 
     public void loadCommands() {
