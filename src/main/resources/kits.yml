@@ -1,0 +1,11 @@
+# You can make as many kits as you want.
+pvp:
+  items:
+    - DIAMOND_SWORD
+    - GOLDEN_APPLE
+  options:
+    item: DIAMOND_SWORD
+    kitname: '&6Test Kit'
+    lore:
+      - 'Fight like a pro'
+      - 'This is a test kit'

@@ -1,0 +1,11 @@
+name: SuperKitPvP
+version: ${project.version}
+main: ezxabi.kitpvp.SuperKitPvP
+api-version: 1.13
+authors: [EzXabi]
+description: This is an easy to use kitpvp plugin!
+commands:
+  ddgpvp:
+    description: "General command"
+  blood:
+    description: "Give someone a bloodkill effect"
