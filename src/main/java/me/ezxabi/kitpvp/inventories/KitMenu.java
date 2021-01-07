@@ -20,15 +20,12 @@ public class KitMenu {
         Inventory inv = Bukkit.createInventory(player, 3 * 9, "Select your kit!");
         ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration kits = configManager.getKits();
-        //*
-        // Een loop voor alle kits te maken van de config
-        //*
+
         for (String key : kits.getKeys(false)) {
             ItemStack item = new ItemStack(Material.valueOf(kits.getString(key + ".options.item")));
-
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', kits.getString(key + ".options.kitname")));
 
+            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', kits.getString(key + ".options.kitname")));
             List<String> loreToSet = new ArrayList<>();
             for (String s : kits.getStringList(key + ".options.lore")) {
                 loreToSet.add(ChatColor.translateAlternateColorCodes('&', s));
@@ -40,5 +37,4 @@ public class KitMenu {
         }
         player.openInventory(inv);
     }
-
 }

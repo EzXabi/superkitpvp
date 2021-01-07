@@ -6,9 +6,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PlayerChatListener implements Listener {
-    //*
-    // Custom chat
-    //*
     @EventHandler
     public void Chat(AsyncPlayerChatEvent e) {
         String message = e.getMessage();

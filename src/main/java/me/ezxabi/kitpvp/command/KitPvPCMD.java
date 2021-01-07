@@ -24,31 +24,18 @@ public class KitPvPCMD implements CommandExecutor {
         ConfigManager configManager = plugin.getConfigManager();
         FileConfiguration config = configManager.getConfig();
 
-        //*
-        // Algemene commando
-        //*
-
         if (cmd.getName().equalsIgnoreCase("kitpvp")) {
-            //*
-            // Checken als sender een speler is
-            //*
             if (!(sender instanceof Player)) {
                 sender.sendMessage(Utils.col("&cYou are not a player!"));
                 return true;
             }
 
             Player p = (Player) sender;
-            //*
-            // Checken voor permission
-            //*
             if (!p.hasPermission("kitpvp.admin")) {
                 sender.sendMessage(Utils.col("&cYout don't have the permission kitpvp.admin!"));
                 return true;
             }
 
-            //*
-            // Help bericht
-            //*
             if (args.length == 0) {
                 p.sendMessage(Utils.col("&2/kitpvp setlobby &a- &2Set a location where you spawn when you login."));
                 p.sendMessage(Utils.col("&2/kitpvp kit &a- &2Opens a menu where you can choose a kit."));
@@ -56,9 +43,6 @@ public class KitPvPCMD implements CommandExecutor {
                 p.sendMessage(Utils.col("&2/blood <speler> &a- &2Gives someone the blood kill effect."));
                 return true;
             } else if (args[0].equalsIgnoreCase("setlobby")) {
-                //*
-                // Instellen van de lobby locatie
-                //*
                 double x = p.getLocation().getX();
                 double y = p.getLocation().getY();
                 double z = p.getLocation().getZ();

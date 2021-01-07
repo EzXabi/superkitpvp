@@ -19,9 +19,6 @@ public class BloodCMD implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        //*
-        // Geef een speler het bloodkill effect
-        //*
         Player player = (Player) sender;
         Player target = Bukkit.getPlayerExact(args[0]);
         ConfigManager configManager = plugin.getConfigManager();
@@ -40,7 +37,6 @@ public class BloodCMD implements CommandExecutor {
                 }
             } catch (Exception e) {
                 player.sendMessage(Utils.col("&c/blood <player>!"));
-
             }
         }
         return true;

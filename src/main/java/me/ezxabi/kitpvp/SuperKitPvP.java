@@ -34,7 +34,7 @@ public final class SuperKitPvP extends JavaPlugin {
         manager.registerEvents(new PlayerMoveListener(this), this);
         manager.registerEvents(new PlayerItemDropListener(), this);
         manager.registerEvents(new PlayerHungerListener(), this);
-        manager.registerEvents(new PlayerInteractListener(), this);
+        manager.registerEvents(new PlayerInteractListener(this), this);
     }
 
     public void loadCommands() {
@@ -57,13 +57,4 @@ public final class SuperKitPvP extends JavaPlugin {
         return this.scoreboardIngame;
     }
 
-    public void runScoreboardTimer() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                if (getScoreboardIngame().getPlayerList().contains(p)) {
-                    getScoreboardIngame().show(p);
-                }
-            }
-        }, 0L, 600L);
-    }
 }

@@ -15,15 +15,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class PlayerJoinListener implements Listener {
 
-    private SuperKitPvP plugin;
+    private final SuperKitPvP plugin;
 
     public PlayerJoinListener(SuperKitPvP plugin) {
         this.plugin = plugin;
     }
 
-    //*
-    // Join listener
-    //*
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -40,7 +37,7 @@ public class PlayerJoinListener implements Listener {
         if (config.getDouble("spawn.x") != 0.0
                 && config.getDouble("spawn.y") != 0.0
                 && config.getDouble("spawn.z") != 0.0
-                && config.getString("spawn.world") != ""
+                && !config.getString("spawn.world").equals("")
                 && config.getDouble("spawn.yaw") != 0.0
                 && config.getDouble("spawn.pitch") != 0.0) {
             double spawnX = config.getDouble("spawn.x");
@@ -59,9 +56,6 @@ public class PlayerJoinListener implements Listener {
             }
         }
 
-        //*
-        // Aanmaken van player bij eerste join
-        //*
         if (!users.contains(name)) {
             users.set(name, player.getName());
             users.set(blood, false);

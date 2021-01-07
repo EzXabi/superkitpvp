@@ -24,9 +24,6 @@ public class PlayerMoveListener implements Listener {
         this.plugin = plugin;
     }
 
-    //*
-    // Listener voor het gebruiken van crash pads : Gebruik (Plaats een gouden pressureplate op de grond en loop er over )
-    //*
     @EventHandler
     public void playerMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
@@ -34,18 +31,13 @@ public class PlayerMoveListener implements Listener {
             Vector v = p.getLocation().getDirection().multiply(3.0).setY(1.0);
             jumppad.add(p.getUniqueId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> jumppad.remove(p.getUniqueId()), 200);
-            //*
-            // Gebruik van velocity voor de movement en spelen van signs en effecten
-            //*
+
             p.setVelocity(v);
             p.playEffect(p.getLocation(), Effect.ENDER_SIGNAL, 3);
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 3.0f, 2.0f);
         }
     }
 
-    //*
-    // Listener voor anti falldamage tijdens het gebruiken van een crashpad
-    //*
     @EventHandler
     public void fall(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {

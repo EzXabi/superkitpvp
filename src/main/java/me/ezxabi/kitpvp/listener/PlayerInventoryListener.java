@@ -22,13 +22,20 @@ public class PlayerInventoryListener implements Listener {
     }
 
     @EventHandler
-    public void close(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
 
-        Player p = (Player) event.getWhoClicked();
-        if (p.getOpenInventory().getTopInventory().getTitle().equalsIgnoreCase("Selecteer jouw kit!")) {
+        Player player = (Player) event.getWhoClicked();
+        if (player.getOpenInventory().getTopInventory().getTitle().equalsIgnoreCase("Select your kit!")) {
             event.setCancelled(true);
-            if (event.getClickedInventory().getTitle().equalsIgnoreCase("Selecteer jouw kit!")) {
+            if (event.getClickedInventory().getTitle().equalsIgnoreCase("Select your kit!")) {
 
+                if(event.getCurrentItem().getItemMeta() == null){
+                    return;
+                }
+                if(event.getCurrentItem().getType() == Material.BLAZE_ROD){
+                    return;
+                }
+                player.getInventory().clear();
                 String displayName = event.getCurrentItem().getItemMeta().getDisplayName().replaceAll("§", "&");
                 ConfigManager configManager = plugin.getConfigManager();
                 FileConfiguration users = configManager.getUsers();
@@ -37,63 +44,34 @@ public class PlayerInventoryListener implements Listener {
                     if (displayName.equalsIgnoreCase(configManager.getKits().getString(key + ".options.kitname"))) {
                         for (String item : configManager.getKits().getStringList(key + ".items")) {
                             if (item == null) continue;
-                            //Check als je niet 2 kits hebt
                             if (!event.getWhoClicked().getInventory().contains(Material.valueOf(item))) {
+                                player.closeInventory();
                                 if (item.contains("HELMET")) {
                                     ItemStack it = new ItemStack(Material.valueOf(item));
-                                    p.getInventory().setHelmet(it);
+                                    player.getInventory().setHelmet(it);
                                 }
                                 if (item.contains("CHESTPLATE")) {
                                     ItemStack it = new ItemStack(Material.valueOf(item));
-                                    p.getInventory().setChestplate(it);
+                                    player.getInventory().setChestplate(it);
                                 }
                                 if (item.contains("LEGGINGS")) {
                                     ItemStack it = new ItemStack(Material.valueOf(item));
-                                    p.getInventory().setLeggings(it);
+                                    player.getInventory().setLeggings(it);
                                 }
                                 if (item.contains("BOOTS")) {
                                     ItemStack it = new ItemStack(Material.valueOf(item));
-                                    p.getInventory().setBoots(it);
+                                    player.getInventory().setBoots(it);
                                 }
                                 if (!item.contains("HELMET") && !item.contains("CHESTPLATE") && !item.contains("LEGGINGS") && !item.contains("BOOTS")) {
                                     ItemStack it = new ItemStack(Material.valueOf(item));
-                                    p.getInventory().addItem(it);
+                                    player.getInventory().addItem(it);
                                 }
                             } else {
-                                ItemStack it = new ItemStack(Material.valueOf(item));
-
-                                p.closeInventory();
-
-                                double spawnX = users.getDouble("pvp.x");
-                                double spawnY = users.getDouble("pvp.y");
-                                double spawnZ = users.getDouble("pvp.z");
-                                String spawnWorld = users.getString("pvp.world");
-                                float yaw = (float) users.getDouble("pvp.yaw");
-                                float pitch = (float) users.getDouble("pvp.pitch");
-
-                                Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
-                                event.getWhoClicked().teleport(spawnLocation);
+                                player.closeInventory();
+                                // TODO: Dingen maken hier die moeten gebeuren na kit selection
                             }
                         }
-                        if (users.getDouble("pvp.x") != 0.0
-                                && users.getDouble("pvp.y") != 0.0
-                                && users.getDouble("pvp.z") != 0.0
-                                && users.getString("pvp.world") != ""
-                                && users.getDouble("pvp.yaw") != 0.0
-                                && users.getDouble("pvp.pitch") != 0.0) {
-                            event.getWhoClicked().closeInventory();
-                            double spawnX = users.getDouble("pvp.x");
-                            double spawnY = users.getDouble("pvp.y");
-                            double spawnZ = users.getDouble("pvp.z");
-                            String spawnWorld = users.getString("pvp.world");
-                            float yaw = (float) users.getDouble("pvp.yaw");
-                            float pitch = (float) users.getDouble("pvp.pitch");
-
-                            Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
-                            event.getWhoClicked().teleport(spawnLocation);
-                        } else {
-                            p.sendMessage(Utils.col("&cYou have not set up a spawn yet!"));
-                        }
+                        player.closeInventory();
                     }
                 }
             }
