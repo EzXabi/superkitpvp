@@ -59,10 +59,10 @@ public class ConfigManager {
     }
 
     public static void loadUsers() {
-        usersFile = new File(plugin.getDataFolder(), "data.yml");
+        usersFile = new File(plugin.getDataFolder(), "players.yml");
         if (!usersFile.exists()) {
             usersFile.getParentFile().mkdirs();
-            plugin.saveResource("data.yml", false);
+            plugin.saveResource("players.yml", false);
         }
 
         usersConfig = new YamlConfiguration();

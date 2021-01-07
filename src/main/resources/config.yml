@@ -1,6 +1,20 @@
-mysql:
-  name: ''
-  username: ''
-  password: ''
-  host: ''
-  port: 3306
+check-for-updates: true
+spawn:
+  teleport-on-join: true
+  world: ''
+  x: 0.0
+  y: 0.0
+  z: 0.0
+  yaw: 0.0
+  pitch: 0.0
+scoreboard:
+  title: "&2&lSuper&a&lKitPvp"
+  lines:
+    - ''
+    - '&2&lStats:'
+    - '&f Kills:&a %user-kills%'
+    - '&f Deaths:&a %user-deaths%'
+    - '&f Coins:&a %user-coins%'
+    - '&f KD-ratio:&a %user-kd-ratio%'
+    - ''
+    - '&2play.superkitpvp.net'

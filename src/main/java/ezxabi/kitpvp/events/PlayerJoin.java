@@ -14,6 +14,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
+
 public class PlayerJoin implements Listener {
 
     private SuperKitPvP plugin;
@@ -28,22 +30,27 @@ public class PlayerJoin implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        String name = String.format("Rank.%s.%s", player.getUniqueId(), "name");
+        String kills = String.format("Rank.%s.%s", player.getUniqueId(), "kills");
+        String deaths = String.format("Rank.%s.%s", player.getUniqueId(), "deaths");
+        String coins = String.format("Rank.%s.%s", player.getUniqueId(), "coins");
+        String blood = String.format("Rank.%s.%s", player.getUniqueId(), "blood");
+
         player.getInventory().clear();
-        if (ConfigManager.getData().getDouble("spawn.x") != 0.0
-                && ConfigManager.getData().getDouble("spawn.y") != 0.0
-                && ConfigManager.getData().getDouble("spawn.z") != 0.0
-                && ConfigManager.getData().getString("spawn.world") != ""
-                && ConfigManager.getData().getDouble("spawn.yaw") != 0.0
-                && ConfigManager.getData().getDouble("spawn.pitch") != 0.0) {
-            double spawnX = ConfigManager.getData().getDouble("spawn.x");
-            double spawnY = ConfigManager.getData().getDouble("spawn.y");
-            double spawnZ = ConfigManager.getData().getDouble("spawn.z");
-            String spawnWorld = ConfigManager.getData().getString("spawn.world");
-            float yaw = (float) ConfigManager.getData().getDouble("spawn.yaw");
-            float pitch = (float) ConfigManager.getData().getDouble("spawn.pitch");
+        if (ConfigManager.getConfig().getDouble("spawn.x") != 0.0
+                && ConfigManager.getConfig().getDouble("spawn.y") != 0.0
+                && ConfigManager.getConfig().getDouble("spawn.z") != 0.0
+                && ConfigManager.getConfig().getString("spawn.world") != ""
+                && ConfigManager.getConfig().getDouble("spawn.yaw") != 0.0
+                && ConfigManager.getConfig().getDouble("spawn.pitch") != 0.0) {
+            double spawnX = ConfigManager.getConfig().getDouble("spawn.x");
+            double spawnY = ConfigManager.getConfig().getDouble("spawn.y");
+            double spawnZ = ConfigManager.getConfig().getDouble("spawn.z");
+            String spawnWorld = ConfigManager.getConfig().getString("spawn.world");
+            float yaw = (float) ConfigManager.getConfig().getDouble("spawn.yaw");
+            float pitch = (float) ConfigManager.getConfig().getDouble("spawn.pitch");
 
             Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
-            player.getInventory().clear();
             player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD,1));
             player.teleport(spawnLocation);
         } else {
@@ -55,8 +62,15 @@ public class PlayerJoin implements Listener {
         //*
         // Aanmaken van player bij eerste join
         //*
-        if (!plugin.data.exists(player.getUniqueId())) {
-            plugin.data.createPlayer(player);
+        if (!ConfigManager.getConfig().contains(name)) {
+            ConfigManager.getConfig().set(name, player.getName());
+            ConfigManager.getConfig().set(blood, false);
+            ConfigManager.getConfig().set(kills, "0");
+            ConfigManager.getConfig().set(deaths, "0");
+            ConfigManager.getConfig().set(coins, "0");
+
+            ConfigManager.saveData();
+            ConfigManager.loadUsers();
         }
         ScoreboardIngame.show(player);
     }

@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import sun.security.krb5.Config;
 
 public class PlayerKill implements Listener {
 
@@ -21,10 +22,15 @@ public class PlayerKill implements Listener {
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        String deaths = String.format("Players.%s.%s", player.getUniqueId(), "deaths");
+        String blood = String.format("Rank.%s.%s", player.getUniqueId(), "blood");
         if (event.getEntity().getKiller() instanceof Player) {
-            //*
-            // Announce bericht + kleine dingen
-            //*
+
+            Player killer = event.getEntity().getKiller();
+            String coins = String.format("Players.%s.%s", killer.getUniqueId(), "coins");
+            String kills = String.format("Players.%s.%s", killer.getUniqueId(), "kills");
+
             event.setDeathMessage(Utils.col("&a"+ event.getEntity().getKiller().getName() + " &2killed&a " + event.getEntity().getName()));
             event.setDroppedExp(0);
             event.setKeepInventory(true);
@@ -34,9 +40,9 @@ public class PlayerKill implements Listener {
 
             // Update playerdata
 
-            plugin.data.addKills(event.getEntity().getKiller().getUniqueId(), 1);
-            plugin.data.addPoints(event.getEntity().getKiller().getUniqueId(), 1);
-            plugin.data.addDeaths(event.getEntity().getUniqueId(), 1);
+            ConfigManager.getData().set(kills, (ConfigManager.getData().getInt(kills) + 1));
+            ConfigManager.getData().set(deaths, (ConfigManager.getData().getInt(deaths) + 1));
+            ConfigManager.getData().set(coins, (ConfigManager.getData().getInt(coins) + 5));
             //*
             // Update scoreboard
             //*
@@ -45,7 +51,7 @@ public class PlayerKill implements Listener {
             event.getEntity().getInventory().clear();
 
 
-            if (plugin.data.getBlood(event.getEntity().getKiller().getUniqueId())) {
+            if (ConfigManager.getData().getBoolean(blood)) {
                 event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.STEP_SOUND, (Object) Material.REDSTONE_BLOCK);
             }
 
@@ -54,7 +60,7 @@ public class PlayerKill implements Listener {
             // Speler dood door fall damage of iets anders
             //*
             event.setDeathMessage(Utils.col("&a"+ event.getEntity().getName() + " &2died"));
-            plugin.data.addDeaths(event.getEntity().getUniqueId(), 1);
+            ConfigManager.getData().set(deaths, (ConfigManager.getData().getInt(deaths) + 1));
             ScoreboardIngame.show(event.getEntity());
             event.setDroppedExp(0);
             event.setKeepInventory(true);
