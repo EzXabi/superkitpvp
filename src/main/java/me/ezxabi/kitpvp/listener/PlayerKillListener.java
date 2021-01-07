@@ -45,6 +45,8 @@ public class PlayerKillListener implements Listener {
                         player.setHealth(player.getMaxHealth());
                         player.getInventory().clear();
                         player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
+                        killer.sendMessage(Utils.col("&aYou killed &2" + player.getName() + "&a and earned &2" + config.getInt("points.points-on-kill") + "&a points!"));
+                        player.sendMessage(Utils.col("&aYou got killed by &2" + killer.getName() + "&a!"));
 
                         users.set(kills, (users.getInt(kills) + 1));
                         users.set(deaths, (users.getInt(deaths) + 1));
@@ -68,6 +70,7 @@ public class PlayerKillListener implements Listener {
                         player.setHealth(player.getMaxHealth());
                         player.getInventory().clear();
                         player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
+                        player.sendMessage(Utils.col("&aYou died and have now &2" + users.getInt(deaths) + "&a."));
 
                         users.set(deaths, (users.getInt(deaths) + 1));
                         configManager.saveUsers(users);
@@ -77,7 +80,7 @@ public class PlayerKillListener implements Listener {
                     }
                 }
             }
-        }else {
+        } else {
             if (event.getEntity().getType() == EntityType.PLAYER) {
                 Player player = (Player) event.getEntity();
                 if (player.getHealth() <= event.getDamage()) {
@@ -87,6 +90,7 @@ public class PlayerKillListener implements Listener {
                     player.setHealth(player.getMaxHealth());
                     player.getInventory().clear();
                     player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
+                    player.sendMessage(Utils.col("&aYou died and have now &2" + users.getInt(deaths) + "&a."));
 
                     users.set(deaths, (users.getInt(deaths) + 1));
                     configManager.saveUsers(users);
@@ -99,24 +103,25 @@ public class PlayerKillListener implements Listener {
     }
 
 
-    public void tryTeleport(Player player, FileConfiguration config){
-        if (config.getDouble("spawn.x") != 0.0
-                && config.getDouble("spawn.y") != 0.0
-                && config.getDouble("spawn.z") != 0.0
-                && !config.getString("spawn.world").equals("")
-                && config.getDouble("spawn.yaw") != 0.0
-                && config.getDouble("spawn.pitch") != 0.0) {
-            double spawnX = config.getDouble("spawn.x");
-            double spawnY = config.getDouble("spawn.y");
-            double spawnZ = config.getDouble("spawn.z");
-            String spawnWorld = config.getString("spawn.world");
-            float yaw = (float) config.getDouble("spawn.yaw");
-            float pitch = (float) config.getDouble("spawn.pitch");
+    public void tryTeleport(Player player, FileConfiguration config) {
+        if (config.getDouble("lobby.x") != 0.0
+                && config.getDouble("lobby.y") != 0.0
+                && config.getDouble("lobby.z") != 0.0
+                && !config.getString("lobby.world").equals("")
+                && config.getDouble("lobby.yaw") != 0.0
+                && config.getDouble("lobby.pitch") != 0.0) {
+            double spawnX = config.getDouble("lobby.x");
+            double spawnY = config.getDouble("lobby.y");
+            double spawnZ = config.getDouble("lobby.z");
+            String spawnWorld = config.getString("lobby.world");
+            float yaw = (float) config.getDouble("lobby.yaw");
+            float pitch = (float) config.getDouble("lobby.pitch");
 
             Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
             player.teleport(spawnLocation);
+            player.sendMessage(Utils.col("&aYou have been teleported to the lobby!"));
         } else {
-            player.sendMessage(Utils.col("&cYou have not set up a spawn yet!"));
+            player.sendMessage(Utils.col("&cYou have not set up a lobby yet!"));
         }
     }
 }

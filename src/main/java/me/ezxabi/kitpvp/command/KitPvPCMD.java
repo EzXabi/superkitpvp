@@ -4,6 +4,7 @@ import me.ezxabi.kitpvp.SuperKitPvP;
 import me.ezxabi.kitpvp.inventories.KitMenu;
 import me.ezxabi.kitpvp.manager.ConfigManager;
 import me.ezxabi.kitpvp.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -37,10 +38,11 @@ public class KitPvPCMD implements CommandExecutor {
             }
 
             if (args.length == 0) {
-                p.sendMessage(Utils.col("&2/kitpvp setlobby &a- &2Set a location where you spawn when you login."));
-                p.sendMessage(Utils.col("&2/kitpvp kit &a- &2Opens a menu where you can choose a kit."));
-                p.sendMessage(Utils.col("&2/kitpvp reload &a- &2Reload all files."));
-                p.sendMessage(Utils.col("&2/blood <speler> &a- &2Gives someone the blood kill effect."));
+                p.sendMessage(Utils.col("&2/kitpvp setlobby &a- Set a location where you spawn when you login."));
+                p.sendMessage(Utils.col("&2/kitpvp lobby &a- Teleports you to the lobby."));
+                p.sendMessage(Utils.col("&2/kitpvp kit &a- Opens a menu where you can choose a kit."));
+                p.sendMessage(Utils.col("&2/kitpvp reload &a- Reload all files."));
+                p.sendMessage(Utils.col("&2/blood <speler> &a- Gives someone the blood kill effect."));
                 return true;
             } else if (args[0].equalsIgnoreCase("setlobby")) {
                 double x = p.getLocation().getX();
@@ -50,12 +52,12 @@ public class KitPvPCMD implements CommandExecutor {
                 float pitch = p.getLocation().getPitch();
                 String worldName = p.getLocation().getWorld().getName();
 
-                config.set("spawn.x", x);
-                config.set("spawn.y", y);
-                config.set("spawn.z", z);
-                config.set("spawn.yaw", (double) yaw);
-                config.set("spawn.pitch", (double) pitch);
-                config.set("spawn.world", worldName);
+                config.set("lobby.x", x);
+                config.set("lobby.y", y);
+                config.set("lobby.z", z);
+                config.set("lobby.yaw", (double) yaw);
+                config.set("lobby.pitch", (double) pitch);
+                config.set("lobby.world", worldName);
                 configManager.saveConfig(config);
                 final Location l = p.getLocation();
                 p.getWorld().setSpawnLocation((int) l.getX(), (int) l.getY(), (int) l.getZ());
@@ -65,7 +67,11 @@ public class KitPvPCMD implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("kit")) {
                 KitMenu.open(plugin, p);
                 return true;
-            } else if (args[0].equalsIgnoreCase("reload")) {
+            }else if (args[0].equalsIgnoreCase("lobby")) {
+                tryTeleport(p,config);
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("reload")) {
                 configManager.loadKits();
                 configManager.loadUsers();
                 configManager.loadConfig();
@@ -78,5 +84,27 @@ public class KitPvPCMD implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    public void tryTeleport(Player player, FileConfiguration config){
+        if (config.getDouble("lobby.x") != 0.0
+                && config.getDouble("lobby.y") != 0.0
+                && config.getDouble("lobby.z") != 0.0
+                && !config.getString("lobby.world").equals("")
+                && config.getDouble("lobby.yaw") != 0.0
+                && config.getDouble("lobby.pitch") != 0.0) {
+            double spawnX = config.getDouble("lobby.x");
+            double spawnY = config.getDouble("lobby.y");
+            double spawnZ = config.getDouble("lobby.z");
+            String spawnWorld = config.getString("lobby.world");
+            float yaw = (float) config.getDouble("lobby.yaw");
+            float pitch = (float) config.getDouble("lobby.pitch");
+
+            Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
+            player.teleport(spawnLocation);
+            player.sendMessage(Utils.col("&aYou have been teleported to the lobby!"));
+        } else {
+            player.sendMessage(Utils.col("&cYou have not set up a lobby yet!"));
+        }
     }
 }

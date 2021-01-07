@@ -1,5 +1,5 @@
 check-for-updates: true
-spawn:
+lobby:
   teleport-on-join: true
   world: ''
   x: 0.0
@@ -18,3 +18,5 @@ scoreboard:
     - '&a Points:&f %user-points% ✪'
     - ''
     - '&fplay.superkitpvp.net'
+points:
+  points-on-kill: 5

@@ -33,28 +33,12 @@ public class PlayerJoinListener implements Listener {
         FileConfiguration config = configManager.getConfig();
         FileConfiguration users = configManager.getUsers();
 
-        player.getInventory().clear();
-        if (config.getDouble("spawn.x") != 0.0
-                && config.getDouble("spawn.y") != 0.0
-                && config.getDouble("spawn.z") != 0.0
-                && !config.getString("spawn.world").equals("")
-                && config.getDouble("spawn.yaw") != 0.0
-                && config.getDouble("spawn.pitch") != 0.0) {
-            double spawnX = config.getDouble("spawn.x");
-            double spawnY = config.getDouble("spawn.y");
-            double spawnZ = config.getDouble("spawn.z");
-            String spawnWorld = config.getString("spawn.world");
-            float yaw = (float) config.getDouble("spawn.yaw");
-            float pitch = (float) config.getDouble("spawn.pitch");
-
-            Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
-            player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
-            player.teleport(spawnLocation);
-        } else {
-            if (player.isOp()) {
-                player.sendMessage(Utils.col("&cYou have not set up a lobby yet!"));
-            }
+        if(config.getBoolean("check-for-updates")){
+            tryTeleport(player,config);
         }
+
+        player.getInventory().clear();
+        player.getInventory().addItem(new ItemStack(Material.BLAZE_ROD, 1));
 
         if (!users.contains(name)) {
             users.set(name, player.getName());
@@ -67,6 +51,28 @@ public class PlayerJoinListener implements Listener {
             configManager.loadUsers();
         }
         plugin.getScoreboardIngame().show(player);
+    }
+
+    public void tryTeleport(Player player, FileConfiguration config){
+        if (config.getDouble("lobby.x") != 0.0
+                && config.getDouble("lobby.y") != 0.0
+                && config.getDouble("lobby.z") != 0.0
+                && !config.getString("lobby.world").equals("")
+                && config.getDouble("lobby.yaw") != 0.0
+                && config.getDouble("lobby.pitch") != 0.0) {
+            double spawnX = config.getDouble("lobby.x");
+            double spawnY = config.getDouble("lobby.y");
+            double spawnZ = config.getDouble("lobby.z");
+            String spawnWorld = config.getString("lobby.world");
+            float yaw = (float) config.getDouble("lobby.yaw");
+            float pitch = (float) config.getDouble("lobby.pitch");
+
+            Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
+            player.teleport(spawnLocation);
+            player.sendMessage(Utils.col("&aYou have been teleported to the lobby!"));
+        } else {
+            player.sendMessage(Utils.col("&cYou have not set up a lobby yet!"));
+        }
     }
 
 }
