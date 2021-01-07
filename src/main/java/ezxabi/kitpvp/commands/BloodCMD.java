@@ -27,8 +27,8 @@ public class BloodCMD implements CommandExecutor {
             String bloodPath = String.format("Rank.%s.%s", player.getUniqueId(), "blood");
             try {
                 Player target = Bukkit.getPlayerExact(args[0]);
-                if (!ConfigManager.getData().getBoolean(bloodPath)) {
-                    ConfigManager.getData().set(bloodPath,true);
+                if (!ConfigManager.getUsers().getBoolean(bloodPath)) {
+                    ConfigManager.getUsers().set(bloodPath,true);
                     player.sendMessage(Utils.col("&2Succesfully given a &abloodkill effect&2 to &a"  + target.getName() +"&2!"));
                 }
             } catch (Exception e) {

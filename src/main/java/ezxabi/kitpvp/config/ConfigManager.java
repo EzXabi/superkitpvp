@@ -54,7 +54,7 @@ public class ConfigManager {
     /* Users Config
      */
 
-    public static FileConfiguration getData() {
+    public static FileConfiguration getUsers() {
         return usersConfig;
     }
 
@@ -73,7 +73,7 @@ public class ConfigManager {
         }
     }
 
-    public static void saveData() {
+    public static void saveUsers() {
         try {
             usersConfig.save(usersFile);
         } catch (IOException e) {

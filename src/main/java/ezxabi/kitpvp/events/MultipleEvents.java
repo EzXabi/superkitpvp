@@ -73,30 +73,30 @@ public class MultipleEvents implements Listener {
                             } else {
                                 ItemStack it = new ItemStack(Material.valueOf(item));
                                 p.closeInventory();
-                                double spawnX = ConfigManager.getData().getDouble("pvp.x");
-                                double spawnY = ConfigManager.getData().getDouble("pvp.y");
-                                double spawnZ = ConfigManager.getData().getDouble("pvp.z");
-                                String spawnWorld = ConfigManager.getData().getString("pvp.world");
-                                float yaw = (float) ConfigManager.getData().getDouble("pvp.yaw");
-                                float pitch = (float) ConfigManager.getData().getDouble("pvp.pitch");
+                                double spawnX = ConfigManager.getUsers().getDouble("pvp.x");
+                                double spawnY = ConfigManager.getUsers().getDouble("pvp.y");
+                                double spawnZ = ConfigManager.getUsers().getDouble("pvp.z");
+                                String spawnWorld = ConfigManager.getUsers().getString("pvp.world");
+                                float yaw = (float) ConfigManager.getUsers().getDouble("pvp.yaw");
+                                float pitch = (float) ConfigManager.getUsers().getDouble("pvp.pitch");
 
                                 Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
                                 event.getWhoClicked().teleport(spawnLocation);
                             }
                         }
-                        if (ConfigManager.getData().getDouble("pvp.x") != 0.0
-                                && ConfigManager.getData().getDouble("pvp.y") != 0.0
-                                && ConfigManager.getData().getDouble("pvp.z") != 0.0
-                                && ConfigManager.getData().getString("pvp.world") != ""
-                                && ConfigManager.getData().getDouble("pvp.yaw") != 0.0
-                                && ConfigManager.getData().getDouble("pvp.pitch") != 0.0) {
+                        if (ConfigManager.getUsers().getDouble("pvp.x") != 0.0
+                                && ConfigManager.getUsers().getDouble("pvp.y") != 0.0
+                                && ConfigManager.getUsers().getDouble("pvp.z") != 0.0
+                                && ConfigManager.getUsers().getString("pvp.world") != ""
+                                && ConfigManager.getUsers().getDouble("pvp.yaw") != 0.0
+                                && ConfigManager.getUsers().getDouble("pvp.pitch") != 0.0) {
                             event.getWhoClicked().closeInventory();
-                            double spawnX = ConfigManager.getData().getDouble("pvp.x");
-                            double spawnY = ConfigManager.getData().getDouble("pvp.y");
-                            double spawnZ = ConfigManager.getData().getDouble("pvp.z");
-                            String spawnWorld = ConfigManager.getData().getString("pvp.world");
-                            float yaw = (float) ConfigManager.getData().getDouble("pvp.yaw");
-                            float pitch = (float) ConfigManager.getData().getDouble("pvp.pitch");
+                            double spawnX = ConfigManager.getUsers().getDouble("pvp.x");
+                            double spawnY = ConfigManager.getUsers().getDouble("pvp.y");
+                            double spawnZ = ConfigManager.getUsers().getDouble("pvp.z");
+                            String spawnWorld = ConfigManager.getUsers().getString("pvp.world");
+                            float yaw = (float) ConfigManager.getUsers().getDouble("pvp.yaw");
+                            float pitch = (float) ConfigManager.getUsers().getDouble("pvp.pitch");
 
                             Location spawnLocation = new Location(Bukkit.getWorld(spawnWorld), spawnX, spawnY, spawnZ, yaw, pitch);
                             event.getWhoClicked().teleport(spawnLocation);

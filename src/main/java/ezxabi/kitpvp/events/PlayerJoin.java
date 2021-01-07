@@ -62,14 +62,14 @@ public class PlayerJoin implements Listener {
         //*
         // Aanmaken van player bij eerste join
         //*
-        if (!ConfigManager.getConfig().contains(name)) {
-            ConfigManager.getConfig().set(name, player.getName());
-            ConfigManager.getConfig().set(blood, false);
-            ConfigManager.getConfig().set(kills, "0");
-            ConfigManager.getConfig().set(deaths, "0");
-            ConfigManager.getConfig().set(coins, "0");
+        if (!ConfigManager.getUsers().contains(name)) {
+            ConfigManager.getUsers().set(name, player.getName());
+            ConfigManager.getUsers().set(blood, false);
+            ConfigManager.getUsers().set(kills, "0");
+            ConfigManager.getUsers().set(deaths, "0");
+            ConfigManager.getUsers().set(coins, "0");
 
-            ConfigManager.saveData();
+            ConfigManager.saveUsers();
             ConfigManager.loadUsers();
         }
         ScoreboardIngame.show(player);

@@ -40,9 +40,9 @@ public class PlayerKill implements Listener {
 
             // Update playerdata
 
-            ConfigManager.getData().set(kills, (ConfigManager.getData().getInt(kills) + 1));
-            ConfigManager.getData().set(deaths, (ConfigManager.getData().getInt(deaths) + 1));
-            ConfigManager.getData().set(coins, (ConfigManager.getData().getInt(coins) + 5));
+            ConfigManager.getUsers().set(kills, (ConfigManager.getUsers().getInt(kills) + 1));
+            ConfigManager.getUsers().set(deaths, (ConfigManager.getUsers().getInt(deaths) + 1));
+            ConfigManager.getUsers().set(coins, (ConfigManager.getUsers().getInt(coins) + 5));
             //*
             // Update scoreboard
             //*
@@ -51,7 +51,7 @@ public class PlayerKill implements Listener {
             event.getEntity().getInventory().clear();
 
 
-            if (ConfigManager.getData().getBoolean(blood)) {
+            if (ConfigManager.getUsers().getBoolean(blood)) {
                 event.getEntity().getWorld().playEffect(event.getEntity().getLocation(), Effect.STEP_SOUND, (Object) Material.REDSTONE_BLOCK);
             }
 
@@ -60,7 +60,7 @@ public class PlayerKill implements Listener {
             // Speler dood door fall damage of iets anders
             //*
             event.setDeathMessage(Utils.col("&a"+ event.getEntity().getName() + " &2died"));
-            ConfigManager.getData().set(deaths, (ConfigManager.getData().getInt(deaths) + 1));
+            ConfigManager.getUsers().set(deaths, (ConfigManager.getUsers().getInt(deaths) + 1));
             ScoreboardIngame.show(event.getEntity());
             event.setDroppedExp(0);
             event.setKeepInventory(true);

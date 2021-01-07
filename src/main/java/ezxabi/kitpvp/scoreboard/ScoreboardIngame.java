@@ -30,9 +30,9 @@ public class ScoreboardIngame {
         String coinsPath = String.format("Rank.%s.%s", player.getUniqueId(), "coins");
         String bloodPath = String.format("Rank.%s.%s", player.getUniqueId(), "blood");
 
-        double kills = ConfigManager.getData().getDouble(killsPath);
-        double deaths = ConfigManager.getData().getDouble(deathsPath);
-        int points = ConfigManager.getData().getInt(coinsPath);
+        double kills = ConfigManager.getUsers().getDouble(killsPath);
+        double deaths = ConfigManager.getUsers().getDouble(deathsPath);
+        int points = ConfigManager.getUsers().getInt(coinsPath);
         double kdRatio = kills / deaths;
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -40,18 +40,18 @@ public class ScoreboardIngame {
         // Scoreboard aanmaken
         //*
         org.bukkit.scoreboard.Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
-        Objective obj = board.registerNewObjective("kitpvp", "dum");
+        Objective obj = board.registerNewObjective("kitpvp", "dummy");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         obj.setDisplayName(Utils.col(ConfigManager.getConfig().getString("scoreboard.title")));
         obj.getScore("    ").setScore(8);
-        obj.getScore("§cStats").setScore(7);
-        obj.getScore("§7Kills: §f" + kills).setScore(6);
-        obj.getScore("§7Deaths: §f" + deaths).setScore(5);
-        obj.getScore("§7Punten: §f" + points + " ✪").setScore(3);
+        obj.getScore("§2Stats").setScore(7);
+        obj.getScore("§aKills: §f" + kills).setScore(6);
+        obj.getScore("§aDeaths: §f" + deaths).setScore(5);
+        obj.getScore("§aPoints: §f" + points + " ✪").setScore(3);
 
-        obj.getScore("§7KD Ratio: §f" + df.format(kdRatio)).setScore(4);
+        obj.getScore("§aKD Ratio: §f" + df.format(kdRatio)).setScore(4);
         obj.getScore("   ").setScore(2);
-        obj.getScore("§cplay.dusdavidgames.nl").setScore(1);
+        obj.getScore("§fplay.superkitpvp.net").setScore(1);
 
         player.setScoreboard(board);
     }
