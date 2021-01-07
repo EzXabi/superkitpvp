@@ -35,6 +35,8 @@ public class BloodCMD implements CommandExecutor {
                     player.sendMessage(Utils.col("&2Succesfully given a &abloodkill effect&2 to &a" + target.getName() + "&2!"));
                     configManager.saveUsers(users);
                     configManager.loadUsers();
+                } else {
+                    player.sendMessage(Utils.col("&cThis player already has the bloodkill effect!"));
                 }
             } catch (Exception e) {
                 player.sendMessage(Utils.col("&c/blood <player>!"));
